@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
@@ -8,7 +9,7 @@ module.exports = defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [['html'], ['allure-playwright']],
   use: {
-    baseURL: 'https://the-internet.herokuapp.com',
+    baseURL: process.env.BASE_URL || 'https://the-internet.herokuapp.com',
     trace: 'on-first-retry',
   },
   projects: [

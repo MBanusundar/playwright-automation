@@ -18,6 +18,7 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.40.0",
-    "allure-playwright": "^3.4.5"
+    "allure-playwright": "^3.4.5",
+    "dotenv": "^17.3.1"
   }
 }
