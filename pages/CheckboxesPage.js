@@ -1,18 +1,13 @@
-/**
- * @fileoverview Page Object Model for Checkboxes page
- * @author Banu
- * @version 1.0.0
- * @description Encapsulates locators and actions for checkbox interactions
- */
+import BasePage from './BasePage.js';
 
-class CheckboxesPage {
+export default class CheckboxesPage extends BasePage {
   constructor(page) {
-    this.page = page;
+    super(page);
     this.checkboxes = page.locator('input[type="checkbox"]');
   }
 
   async navigate() {
-    await this.page.goto('/checkboxes');
+    await super.navigate('/checkboxes');
   }
 
   async isChecked(index) {
@@ -27,5 +22,3 @@ class CheckboxesPage {
     }
   }
 }
-
-export default CheckboxesPage;

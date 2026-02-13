@@ -24,6 +24,12 @@ npm install
 npx playwright install
 ```
 
+4. Configure environment (optional):
+```bash
+cp .env.example .env
+# Edit .env to set BASE_URL for different environments
+```
+
 ## Running Tests
 
 Execute tests across all browsers (Chromium, Firefox, WebKit):
@@ -60,12 +66,18 @@ npm run allure:open
 
 ```
 playwright-framework/
+├── .github/
+│   └── workflows/
+│       └── playwright.yml    # CI/CD workflow
 ├── package.json              # Dependencies and scripts
 ├── playwright.config.js      # Playwright configuration
+├── .env.example              # Environment variables template
 ├── pages/                    # Page Object Model classes
-│   └── CheckboxesPage.js     # Checkboxes page object
+│   ├── CheckboxesPage.js     # Checkboxes page object
+│   └── LoginPage.js          # Login page object
 ├── tests/                    # Test specifications
-│   └── checkboxes.spec.js    # Checkbox validation test
+│   ├── checkboxes.spec.js    # Checkbox validation test
+│   └── login.spec.js         # Login validation test
 └── README.md                 # This file
 ```
 
@@ -89,11 +101,13 @@ playwright-framework/
 ### Configuration
 - **Cross-browser**: Configured for Chromium, Firefox, and WebKit
 - **HTML & Allure reporting**: Built-in HTML reporter and Allure for rich test reports
-- **Base URL**: Centralized in config for easy environment switching
+- **Base URL**: Centralized in config with environment variable support
 - **Trace on retry**: Debugging support without overhead on passing tests
+- **CI/CD**: GitHub Actions workflow for automated testing across browsers
 
-## Test Scenario
+## Test Scenarios
 
+### Checkboxes Test
 **Target**: https://the-internet.herokuapp.com/checkboxes
 
 **Steps**:
@@ -102,15 +116,32 @@ playwright-framework/
 3. Ensure second checkbox is checked
 4. Assert both checkboxes are checked
 
+### Login Test
+**Target**: https://the-internet.herokuapp.com/login
+
+**Steps**:
+1. Navigate to login page
+2. Enter valid/invalid credentials
+3. Submit login form
+4. Assert success/error message
+
+## Bonus Features Implemented
+
+✅ **Environment-based configuration**: `.env` file support for `BASE_URL` and environment-specific settings
+
+✅ **Additional test cases**: Login flow with positive and negative scenarios
+
+✅ **GitHub Actions CI workflow**: Automated testing across Chromium, Firefox, and WebKit on every push
+
 ## Next Improvement
 
-**Environment-based configuration**: Introduce `.env` file support to externalize the `baseURL` and other environment-specific settings. This would allow running tests against different environments (dev, staging, production) without code changes.
+**ESLint + Prettier integration**: Add code linting and formatting for consistent code style across the team.
 
 Implementation approach:
-- Add `dotenv` package
-- Create `.env` file for environment variables
-- Update `playwright.config.js` to read from `process.env.BASE_URL`
-- Add `.env.example` template for team members
+- Add `eslint` and `prettier` packages
+- Create `.eslintrc.js` and `.prettierrc` configuration files
+- Add npm scripts for linting and formatting
+- Integrate with pre-commit hooks using `husky`
 
 ## Additional Notes
 
