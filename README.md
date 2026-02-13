@@ -1,62 +1,58 @@
-node -# Playwright UI Automation Framework
+# Playwright UI Automation Framework
 
-A minimal, scalable end-to-end UI automation framework using Playwright Test.
+A minimal, scalable end-to-end UI automation framework using Playwright Test with Page Object Model.
+
+## Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Install browsers
+npx playwright install
+
+# Run tests
+npm test
+
+# View report
+npm run report
+```
 
 ## Prerequisites
 
 - Node.js (v16 or higher)
 - npm (comes with Node.js)
 
-## Installation
-
-1. Navigate to the project directory:
-```bash
-cd playwright-framework
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Install Playwright browsers:
-```bash
-npx playwright install
-```
-
-4. Configure environment (optional):
-```bash
-cp .env.example .env
-# Edit .env to set BASE_URL for different environments
-```
-
 ## Running Tests
 
-Execute tests across all browsers (Chromium, Firefox, WebKit):
+**All browsers:**
 ```bash
 npm test
 ```
 
-Run tests in headed mode (see browser):
+**Headed mode (see browser):**
 ```bash
 npm run test:headed
 ```
 
-Run tests on a specific browser:
+**Specific browser:**
 ```bash
 npx playwright test --project=chromium
 ```
 
-## View HTML Report
+**Debug mode:**
+```bash
+npx playwright test --debug
+```
 
-After test execution, view the HTML report:
+## View Reports
+
+**HTML Report:**
 ```bash
 npm run report
 ```
 
-## View Allure Report
-
-Generate and view Allure report:
+**Allure Report:**
 ```bash
 npm run allure:generate
 npm run allure:open
@@ -66,86 +62,50 @@ npm run allure:open
 
 ```
 playwright-framework/
-├── .github/
-│   └── workflows/
-│       └── playwright.yml    # CI/CD workflow
-├── package.json              # Dependencies and scripts
-├── playwright.config.js      # Playwright configuration
-├── .env.example              # Environment variables template
 ├── pages/                    # Page Object Model classes
-│   ├── CheckboxesPage.js     # Checkboxes page object
-│   └── LoginPage.js          # Login page object
-├── tests/                    # Test specifications
-│   ├── checkboxes.spec.js    # Checkbox validation test
-│   └── login.spec.js         # Login validation test
-└── README.md                 # This file
+│   ├── BasePage.js          # Base class with common methods
+│   ├── CheckboxesPage.js    # Checkboxes page object
+│   └── LoginPage.js         # Login page object
+├── tests/                   # Test specifications
+│   ├── checkboxes.spec.js   # Checkbox tests (1 test)
+│   └── login.spec.js        # Login tests (2 tests)
+├── .github/workflows/       # CI/CD configuration
+├── playwright.config.js     # Playwright configuration
+├── package.json             # Dependencies and scripts
+└── .env.example             # Environment variables template
 ```
 
-## Design Rationale
+## Features
 
-### Page Object Model (POM)
-- **Encapsulation**: All locators and page-specific actions are contained in `CheckboxesPage.js`
-- **Reusability**: Page methods can be reused across multiple tests
-- **Maintainability**: Locator changes only require updates in one place
+✅ **Page Object Model** - Clean separation of test logic and page interactions
+✅ **Cross-browser testing** - Chromium, Firefox, WebKit
+✅ **Environment configuration** - `.env` file support for different environments
+✅ **CI/CD ready** - GitHub Actions workflow included
+✅ **Multiple reporters** - HTML and Allure reports
+✅ **Auto-screenshots** - Captures screenshots on test failure
+✅ **No flaky waits** - Uses Playwright's auto-waiting
 
-### Locator Strategy
-- Used `input[type="checkbox"]` CSS selector for stability
-- Indexed access via `nth()` for specific checkbox targeting
-- Avoids brittle XPath selectors
+## Test Cases
 
-### Test Design
-- **Declarative intent**: Test reads like requirements (ensure checked, assert checked)
-- **No arbitrary waits**: Playwright's auto-waiting handles synchronization
-- **Clear assertions**: Explicit validation of both checkboxes at the end
+**Total: 3 tests**
 
-### Configuration
-- **Cross-browser**: Configured for Chromium, Firefox, and WebKit
-- **HTML & Allure reporting**: Built-in HTML reporter and Allure for rich test reports
-- **Base URL**: Centralized in config with environment variable support
-- **Trace on retry**: Debugging support without overhead on passing tests
-- **CI/CD**: GitHub Actions workflow for automated testing across browsers
+1. **Checkboxes Test** - Validates checkbox selection functionality
+2. **Login Success Test** - Tests valid login credentials
+3. **Login Failure Test** - Tests invalid login credentials
 
-## Test Scenarios
+## Configuration
 
-### Checkboxes Test
-**Target**: https://the-internet.herokuapp.com/checkboxes
+**Change environment:**
+```bash
+cp .env.example .env
+# Edit .env and set BASE_URL=your_url
+```
 
-**Steps**:
-1. Navigate to checkboxes page
-2. Ensure first checkbox is checked (toggle if needed)
-3. Ensure second checkbox is checked
-4. Assert both checkboxes are checked
+**Default URL:** https://the-internet.herokuapp.com
 
-### Login Test
-**Target**: https://the-internet.herokuapp.com/login
+## Enhancements Implemented
 
-**Steps**:
-1. Navigate to login page
-2. Enter valid/invalid credentials
-3. Submit login form
-4. Assert success/error message
-
-## Bonus Features Implemented
-
-✅ **Environment-based configuration**: `.env` file support for `BASE_URL` and environment-specific settings
-
-✅ **Additional test cases**: Login flow with positive and negative scenarios
-
-✅ **GitHub Actions CI workflow**: Automated testing across Chromium, Firefox, and WebKit on every push
-
-## Next Improvement
-
-**ESLint + Prettier integration**: Add code linting and formatting for consistent code style across the team.
-
-Implementation approach:
-- Add `eslint` and `prettier` packages
-- Create `.eslintrc.js` and `.prettierrc` configuration files
-- Add npm scripts for linting and formatting
-- Integrate with pre-commit hooks using `husky`
-
-## Additional Notes
-
-- No `node_modules/` committed (listed in `.gitignore`)
-- No arbitrary `waitForTimeout` used
-- Minimal code with maximum clarity
-- Ready for CI/CD integration
+✅ **Environment-based configuration** - Use `.env` file to switch between dev/staging/prod
+✅ **Login test cases** - Added positive and negative login scenarios
+✅ **GitHub Actions CI** - Auto-run tests on push across all browsers
+✅ **BasePage pattern** - Reusable methods for all page objects
